@@ -1,0 +1,2 @@
+IT213|Computer Programming I|3|Computer Studies|First Year|1st Semester
+C1232|Discrete Structure|1|Computer Studies|First Year|1st Semester

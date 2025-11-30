@@ -1,0 +1,2 @@
+SCD001|BSIT-1|IT213|Mon|08:00|09:00|DE GUZMAN, Joveylaine Pimentel
+SCD002|BSIT-1|C1232|Thu|08:00|17:00|DE GUZMAN, Joveylaine Pimentel
