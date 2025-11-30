@@ -1,0 +1,5 @@
+UDJ-25-0001|ALPHA, One Eno|Bachelor of Science in Information Technology|Computer Studies Department|College of Science|First Year|Regular|aoe@gmail.com|Manila City|BSIT-1
+UDJ-25-0002|BRAVO, Two Owt|Bachelor of Science in Information Technology|Computer Studies Department|College of Science|First Year|Regular|bto@gmail.com|Manila City|BSIT-1
+UDJ-25-0003|CHARLIE, Three Eerht|Bachelor of Science in Civil Engineering|Engineering Department|College of Engineering|Third Year|Irregular|cte@gmail.com|Malabon City|BSCE-3
+UDJ-25-0004|DELTA, Four Rouf|Bachelor of Science in Environmental Science|Chemistry Department|College of Science|Second Year|Regular|dfr@gmail.com|Pasay City|BSES-2
+UDJ-25-0005|EUROPE, Five Evif|Bachelor of Science in Hospitality Management|Management Department|College of Liberal Arts|Fourth Year|Regular|efe@gmail.com|Quezon City|BSHM-4

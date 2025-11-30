@@ -1,18 +1,46 @@
 package com.udj.gui;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane; 
+
 public class StudentLogin extends javax.swing.JFrame {
     
+    private final JFrame mainAppFrame;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StudentLogin.class.getName());
 
-    public StudentLogin() {
+    public StudentLogin(javax.swing.JFrame mainFrame) {
         initComponents();
+       this.mainAppFrame = mainFrame;
+        this.setAlwaysOnTop(true);
+        if (this.mainAppFrame != null) {
+            this.mainAppFrame.setEnabled(false);
+        }
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                restoreParent();
+            }
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                if (mainAppFrame != null && mainAppFrame.isDisplayable()) {
+                    restoreParent();
+                }
+            }
+        });
     }
-
+    
+    private void restoreParent() {
+        if (mainAppFrame != null) {
+            mainAppFrame.setEnabled(true);
+            mainAppFrame.toFront(); 
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanel1 = new com.udj.gui.components.Background();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
@@ -24,7 +52,7 @@ public class StudentLogin extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         LoginButton = new javax.swing.JLabel();
         LoginBGLabel = new javax.swing.JLabel();
-        LoginBHover = new javax.swing.JLabel();
+        LoginBHover = new com.udj.gui.components.ButtonLabelBG();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -48,22 +76,12 @@ public class StudentLogin extends javax.swing.JFrame {
         jPasswordField1.setBackground(new java.awt.Color(248, 240, 252));
         jPasswordField1.setBorder(null);
         jPasswordField1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
         jPanel1.add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 194, 190, 20));
 
         UsernameF.setBackground(new java.awt.Color(249, 243, 253));
         UsernameF.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         UsernameF.setBorder(null);
         UsernameF.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        UsernameF.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsernameFActionPerformed(evt);
-            }
-        });
         jPanel1.add(UsernameF, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, 190, 20));
 
         jLabel5.setForeground(new java.awt.Color(46, 20, 72));
@@ -127,17 +145,40 @@ public class StudentLogin extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void UsernameFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameFActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_UsernameFActionPerformed
-
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
-
     private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseClicked
-        LoginBHover.setOpaque(true);
-        //java.awt.EventQueue.invokeLater(() -> new StudentLogin().setVisible(true));
+        String username = UsernameF.getText().trim();
+        String password = new String(jPasswordField1.getPassword());
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter username and password.", "Missing Fields", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        com.udj.logic.User user = com.udj.logic.LoginCheck.validateLogin(username, password);
+
+        if (user != null) {
+            String role = user.getRole();
+
+            switch (role) {
+                case "STUDENT" -> {
+                    JOptionPane.showMessageDialog(this, "Login successful!", "Welcome", JOptionPane.INFORMATION_MESSAGE);
+                    if (mainAppFrame != null) { 
+                        mainAppFrame.dispose(); 
+                    }
+                   // StudentDashboard studentScreen = new StudentDashboard(); // Replace with your actual class
+                   // studentScreen.setVisible(true);
+                    this.dispose(); 
+                }
+                case "TEACHER", "ADMIN" -> {
+                    JOptionPane.showMessageDialog(this, "This account is not for student login. Please use the appropriate login screen.", "Wrong Login", JOptionPane.WARNING_MESSAGE);
+                }
+                default -> {
+                    JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_LoginButtonMouseClicked
 
     private void LoginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseEntered

@@ -1,0 +1,4 @@
+ID1,BASTA FIRST YEAR,3,All,First Year,Any Semester
+ID2,FIRST YEAR NA CS LANG,3,Computer Studies,First Year,1st Semester
+ID3,SECOND YEAR NA CS,3,Computer Studies,Second Year,1st Semester
+ID4,PANG ENGINEERING NA THIRD YEAR LANG,3,Engineering,Third Year,2nd Semester

@@ -1,18 +1,46 @@
 package com.udj.gui;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class TeacherLogin extends javax.swing.JFrame {
     
+    private final JFrame mainAppFrame;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TeacherLogin.class.getName());
 
-    public TeacherLogin() {
+    public TeacherLogin(javax.swing.JFrame mainFrame) {
         initComponents();
+        this.mainAppFrame = mainFrame;
+        this.setAlwaysOnTop(true);
+        if (this.mainAppFrame != null) {
+            this.mainAppFrame.setEnabled(false);
+        }
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                restoreParent();
+            }
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                if (mainAppFrame != null && mainAppFrame.isDisplayable()) {
+                    restoreParent();
+                }
+            }
+        });
     }
-
+    
+    private void restoreParent() {
+        if (mainAppFrame != null) {
+            mainAppFrame.setEnabled(true);
+            mainAppFrame.toFront(); 
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        jPanel1 = new com.udj.gui.components.Background();
         jPasswordField1 = new javax.swing.JPasswordField();
         UsernameF = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -24,7 +52,7 @@ public class TeacherLogin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         LoginButton = new javax.swing.JLabel();
         LoginBGLabel = new javax.swing.JLabel();
-        LoginBHover = new javax.swing.JLabel();
+        LoginBHover = new com.udj.gui.components.ButtonLabelBG();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -128,16 +156,47 @@ public class TeacherLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void UsernameFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameFActionPerformed
-        // TODO add your handling code here:
+     
     }//GEN-LAST:event_UsernameFActionPerformed
 
     private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
+     
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseClicked
-        LoginBHover.setOpaque(true);
-        //java.awt.EventQueue.invokeLater(() -> new StudentLogin().setVisible(true));
+         String username = UsernameF.getText().trim();
+        String password = new String(jPasswordField1.getPassword());
+
+        if (username.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter username and password.", "Missing Fields", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        com.udj.logic.User user = com.udj.logic.LoginCheck.validateLogin(username, password);
+
+        if (user != null) {
+            String role = user.getRole();
+
+            switch (role) {
+                case "TEACHER" -> {
+                    JOptionPane.showMessageDialog(this, "Login successful!", "Welcome", JOptionPane.INFORMATION_MESSAGE);
+                    if (mainAppFrame != null) { 
+                        mainAppFrame.dispose();
+                    }
+                    TeacherMainScreen teacherms = new TeacherMainScreen(); 
+                    teacherms.setVisible(true);
+                    this.dispose(); 
+                }
+                case "STUDENT", "ADMIN" -> {
+                    JOptionPane.showMessageDialog(this, "This account is not for teacher login. Please use the appropriate login screen.", "Wrong Login", JOptionPane.WARNING_MESSAGE);
+                }
+                default -> {
+                    JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_LoginButtonMouseClicked
 
     private void LoginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseEntered

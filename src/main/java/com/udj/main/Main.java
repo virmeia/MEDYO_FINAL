@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            new com.udj.gui.MainScreen().setVisible(true); 
+            new com.udj.gui.AdminDB().setVisible(true); 
         });
     }
 }
