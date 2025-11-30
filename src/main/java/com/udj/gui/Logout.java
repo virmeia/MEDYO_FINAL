@@ -38,6 +38,7 @@ public class Logout extends javax.swing.JFrame {
 
         YesC.setBorderPainted(false);
         YesC.setContentAreaFilled(false);
+        YesC.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         YesC.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 YesCMouseClicked(evt);
@@ -53,6 +54,7 @@ public class Logout extends javax.swing.JFrame {
 
         NoC.setBorderPainted(false);
         NoC.setContentAreaFilled(false);
+        NoC.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         NoC.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 NoCMouseClicked(evt);
@@ -107,9 +109,13 @@ public class Logout extends javax.swing.JFrame {
     }//GEN-LAST:event_NoCMouseExited
 
     private void YesCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_YesCMouseClicked
-        confirmedYes = true; // User clicked YES
-        this.dispose();
-        new com.udj.gui.MainScreen().setVisible(true); 
+        confirmedYes = true;
+        if (parentFrame instanceof StudentProfileMain) {
+            StudentProfileMain.setLoggedInStudentId(null);
+        } else if (parentFrame instanceof TeacherMainScreen) {
+            TeacherMainScreen.setLoggedInTeacherId(null);
+        }
+        System.exit(0);
     }//GEN-LAST:event_YesCMouseClicked
 
     @Override
