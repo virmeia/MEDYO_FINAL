@@ -31,7 +31,7 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
         loadAllEvaluations();
         System.out.println("DEBUG: Found " + allEvaluations.size() + " evaluations");
         populateSubjectComboBox();
-        loadStudentData(); // Load initial display  
+        loadStudentData(); 
     }
     
     private void loadAllEvaluations() {
@@ -44,7 +44,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
             while ((line = br.readLine()) != null) {
                 String[] data = line.split("\\|");
 
-                // Check if this line matches the teacher ID
                 if (data.length >= 8 && data[0].equals(teacherID)) {
                     EvaluationData eval = new EvaluationData();
                     eval.courseCode = data[1];
@@ -55,7 +54,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
                     eval.rate5 = data[6];
                     eval.overallAverage = data[7];
 
-                    // Parse comments - collect all remaining fields as separate comments
                     if (data.length > 8) {
                         StringBuilder commentBuilder = new StringBuilder();
                         for (int i = 8; i < data.length; i++) {
@@ -82,8 +80,7 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
     
     private void populateSubjectComboBox() {
         SubjectDB.removeAllItems();
-        
-        // Only show combo box if teacher has more than one subject
+       
         if (allEvaluations.size() > 1) {
             SubjectDB.setVisible(true);
             
@@ -91,12 +88,12 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
                 SubjectDB.addItem(eval.courseCode);
             }
         } else if (allEvaluations.size() == 1) {
-            // Hide combo box if only one subject
+            
             SubjectDB.setVisible(false);
-            // Still add the single course for internal tracking
+            
             SubjectDB.addItem(allEvaluations.get(0).courseCode);
         } else {
-            // No evaluations
+            
             SubjectDB.setVisible(false);
         }
     }
@@ -118,7 +115,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
             return;
         }
 
-        // Calculate overall averages across all courses
         double totalRate1 = 0, totalRate2 = 0, totalRate3 = 0;
         double totalRate4 = 0, totalRate5 = 0, totalOverall = 0;
 
@@ -133,7 +129,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
 
         int count = allEvaluations.size();
 
-        // Display average ratings
         Rate1.setText(String.format("%.2f", totalRate1 / count));
         Rate2.setText(String.format("%.2f", totalRate2 / count));
         Rate3.setText(String.format("%.2f", totalRate3 / count));
@@ -141,7 +136,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
         Rate5.setText(String.format("%.2f", totalRate5 / count));
         AveRate.setText(String.format("%.2f", totalOverall / count));
 
-        // Display only comments from all courses
         StringBuilder allComments = new StringBuilder();
 
         for (EvaluationData eval : allEvaluations) {
@@ -163,7 +157,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
     private void displaySpecificCourse(String courseCode) {
         EvaluationData eval = null;
     
-        // Find the evaluation for this course
         for (EvaluationData e : allEvaluations) {
             if (e.courseCode.equals(courseCode)) {
                 eval = e;
@@ -176,7 +169,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
             return;
         }
 
-        // Display ratings for this specific course
         Rate1.setText(eval.rate1);
         Rate2.setText(eval.rate2);
         Rate3.setText(eval.rate3);
@@ -184,7 +176,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
         Rate5.setText(eval.rate5);
         AveRate.setText(eval.overallAverage);
 
-        // Display ONLY the comments - simplified version
         JTextArea commentsArea = new JTextArea();
         commentsArea.setText(eval.comments);
         commentsArea.setWrapStyleWord(true);
@@ -245,7 +236,6 @@ public class StatusEvaluationPanel extends javax.swing.JPanel {
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         add(Comments, new org.netbeans.lib.awtextra.AbsoluteConstraints(658, 204, 270, 230));
 
-        SubjectDB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ALL", "COS", "COE", "CLA" }));
         SubjectDB.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         SubjectDB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
